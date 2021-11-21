@@ -29,8 +29,10 @@ def rename_files(files):
 
 def convert_to_jpeg(pics,direc):
 
+    # Loop through all images in the directory
     for idx,page in enumerate(pics):
 
+        # Change the image filetype to jpg or gif
             if page.find('webp') != -1 or page.find('png') != -1:
                 img = Image.open(page).convert("RGB")
                 img.save(os.path.join(direc,f"{idx:03}.jpg"),"jpeg")
@@ -46,12 +48,15 @@ def convert_to_jpeg(pics,direc):
 
 def make_cover_file(cover_direc,chapter_direc):
 
+    # Check if the cover page does not exist
     if not os.path.exists(cover_direc):
 
+        # Copy the first image and rename it as cover.jpg
         page_names = os.listdir(chapter_direc)
         print(chapter_direc)
         shutil.copyfile(os.path.join(chapter_direc,page_names[1]),os.path.join(files,'cover.jpg'))
 
+        # Create the cover page with a given size
         cover = Image.open(os.path.join(files,'cover.jpg'))
         cover.save(os.path.join(files,'cover.jpg'),dpi=(96,96))
 
@@ -86,7 +91,6 @@ for files in tqdm(file_locs):
         convert_to_jpeg(rename_files(files),chapter_path)
     
     else :
-        
         convert_to_jpeg(rename_files(chapter_path),chapter_path)
     
     make_cover_file(cover_path, chapter_path)
